@@ -7,22 +7,30 @@ Create a `.env` file to hold your environment variables for Nginx. You can base 
 
 Using Docker, build the image.
 ```bash
-$ docker build -t jamescmartinez/nginx-s3-upload .
+docker build -t nginx-s3-upload .
 ```
 
 After the image is built, create a container.
 ```bash
-$ docker run -d -p 80:80 --env-file=.env jamescmartinez/nginx-s3-upload
+docker run -d -p 8080:80 --env-file=.env nginx-s3-upload
 ```
 
 ## Usage
 
-Once the container is running, give it a try!
+### Upload file
+
 ```bash
-$ curl -T path/to/file/to/upload http://nginx-s3-upload.yourdomain.com/uploads/entity/property/filename.extension
+curl -v \
+-T /path/to/file/to/upload \
+-H 'Content-Disposition: filename="file to upload.ext"' \
+localhost:8080/upload
 ```
 
-The response will contain a header, `X-File-URL`, with the location of the file on your S3 bucket.
+### List files
+
+```bash
+curl http://localhost:8080
+```
 
 ## Contributing
 
